@@ -1,306 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Complete Website Layout</title>
-		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-	<link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tonka Track & Field</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a202c;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #4a5568;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .info-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.25rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-item h3 {
+            font-size: 1rem;
+            margin-bottom: 0;
+            color: #1a202c;
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .athlete-image {
+            width: 100%;
+            height: 350px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            grid-column: 1;
+            align-self: center;
+            overflow: hidden;
+        }
+
+        .athlete-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .athlete-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            grid-column: 2;
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .card p {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            background: rgba(26, 32, 44, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        @media (max-width: 968px) {
+            .sports-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .sports-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content {
+                padding: 2rem;
+            }
+
+            .card {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .athlete-image {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+                grid-column: 1;
+                justify-self: center;
+            }
+
+            .athlete-card {
+                grid-column: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .hero-content {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
 </head>
 <body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">🏃 TONKA TRACK</div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#news" onclick="closeMenu()">News</a></li>
+                <li><a href="#sports" onclick="closeMenu()">Sports</a></li>
+                <li><a href="#mtfcca" onclick="closeMenu()">MTFCCA</a></li>
+                <li><a href="#events" onclick="closeMenu()">Events</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-	<div class="container-fluid">
-		<a class="navbar-brand" href="#"><img src="img/logo6.jpg"></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarResponsive">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="#">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">About</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Services</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Team</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Connect</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Tonka Track & Field</h1>
+            <p>Excellence in athletics, dedication in training, champions in character. Join us as we celebrate our athletes' achievements and build a community of excellence.</p>
+            <a href="#learn-more" class="cta-button">Learn More</a>
+        </div>
+    </section>
 
-<!--- Image Slider -->
-<div id="slides" class="carousel slide" data-ride="carousel" data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<ul class="carousel-indicators">
-		<li data-target="#slides" data-slide-to="0" class="active"></li>
-		<li data-target="#slides" data-slide-to="1"></li>
-		<li data-target="#slides" data-slide-to="2"></li>
-	</ul>
-	<div class="carousel-inner">
-		<div class="carousel-item active">
-			<img class="image" src="img/background.png">
-			<div class="carousel-caption">
-				<h1 class="display-2">Website</h1>
-				<h3>Complete Website Layout</h3>
-				<button type="button" class="btn btn-outline-light btn-lg">VIEW
-				DEMO</button>
-				<button type="button" class="btn btn-primary btn-lg">Get Started</button>
-			</div>
-		</div>
-		<div class="carousel-item">
-			<img class="image" src="img/background2.png">
-		</div>
-		<div class="carousel-item">
-			<img class="image" src="img/background3.png">
-		</div>
-	</div>
-</div>
+    <section class="info-section">
+        <div class="sports-grid">
+            <div class="info-item">
+                <div class="info-icon">🏃‍♀️</div>
+                <h3>Girls Cross Country</h3>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🏃‍♂️</div>
+                <h3>Boys Cross Country</h3>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🏃‍♀️</div>
+                <h3>Girls Track & Field</h3>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🏃‍♂️</div>
+                <h3>Boys Track & Field</h3>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🤝</div>
+                <h3>MTFCCA</h3>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📅</div>
+                <h3>Events</h3>
+            </div>
+        </div>
+    </section>
 
-<!--- Jumbotron -->
-<div class="container-fluid" data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row jumbotron">
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
-			<p class="lead">A web hosting service allows individuals and
-				organizations to make their website accessible via the World
-				Wide Web.</p>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-			<a href="#"><button type="button" class="btn btn-outline-secondary
-			btn-lg">Web Hosting</button></a>
-		</div>
-	</div>
-</div>
+    <div class="cards-grid">
+        <div class="card">
+            <div class="athlete-image">
+                <img src="https://i.imgur.com/C0U97vP.jpg" alt="Sean Fries">
+            </div>
+            <div class="athlete-card">
+                <h2>Sean Fries</h2>
+                <p>9th place at Footlocker Nationals, earning All-American Status. An incredible achievement representing Tonka Track at the highest level.</p>
+            </div>
+        </div>
 
-<!--- Welcome Section -->
-<div class="container-fluid padding"data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row welcome text-center">
-		<div class="col-12">
-			<h1 class="display-4">Built with ease.</h1>
-		</div>
-		<hr>
-		<div class="col-12">
-			<p class="lead">Welcome to my website tutorial!
-				Bootstrap is a free and open-source front-end library with HTML and
-				CSS based designs.</p>
-		</div>
-	</div>
-</div>
+        <div class="card">
+            <div class="athlete-image">CK</div>
+            <div class="athlete-card">
+                <h2>Claire Kohler</h2>
+                <p>2024 Gatorade Minnesota Track Athlete of the Year! A true champion both on and off the track. We're incredibly proud of your achievements!</p>
+            </div>
+        </div>
 
-<!--- Three Column Section -->
-<div class="container-fluid padding"data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row text-center padding">
-		<div class="col-xs-12 col-sm-6 col-md-4">
-			<i class="fas fa-code"></i>
-			<h3>HTML5</h3>
-			<p>Built with the latest version of HTML, HTML5.</p>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4">
-			<i class="fas fa-bold"></i>
-			<h3>BOOTSTRAP</h3>
-			<p>Built with the latest version of Bootstrap, Bootstrap 4.</p>
-		</div>
-		<div class="col-xs-12 col-md-4">
-			<i class="fab fa-css3"></i>
-			<h3>CSS3</h3>
-			<p>Built with the latest version of CSS, CSS3.</p>
-		</div>
-	</div>
-	<hr class="my-4">
-</div>
+        <div class="card">
+            <div class="athlete-image">
+                <img src="https://i.imgur.com/30rqtDn.jpg" alt="Sprint Medley Relay Team">
+            </div>
+            <div class="athlete-card">
+                <h2>Sprint Medley Relay Team</h2>
+                <p>Our All-American Sprint Medley relay team set a Hayward Field high school record at Nike Nationals in June 2024!</p>
+                <p style="margin-top: 1rem; font-weight: 600;">Team: Evie Malec, Claire Kohler, Zeal Kuku, Charlotte Roehl</p>
+            </div>
+        </div>
+    </div>
 
-<!--- Two Column Section -->
-<div class="container-fluid padding"data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row padding">
-		<div class="col-md-12 col-lg-6">
-			<h2>If you build it...</h2>
-			<p>The columns will automatically stack on each other when
-				the screen is less than 576px wide.</p>
-			<p>Resize the browserwindow to see the effect. Responsive web
-				design has become more important as the amount of mobile traffic now
-				accounts for more than half of total internet traffic.</p>
-			<p>It can also display the web page differently depending on the
-				screen size or viewing device.</p>
-				<br>
-				<a href="#" class="btn btn-primary">Learn More</a>
-		</div>
-		<div class="col-lg-6">
-			<img src="img/desk.png" class="img-fluid">
-		</div>
-	</div>
-</div>
+    <footer>
+        <p>&copy; 2024 Tonka Track & Field. Building champions, one stride at a time.</p>
+    </footer>
 
-<hr class="my-4">
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
 
-
-<!--- Meet the team -->
-<div class="container-fluid padding">
-	<div class="row welcome text-center">
-		<div class="col-12">
-			<h1 class="display-4">Meet the Team </h1>
-		</div>
-	</div>
-</div>
-
-<!--- Cards -->
-<div class="container-fluid padding" data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row padding">
-		<div class="col-md-4">
-			<div class="card">
-				<img class="card-img-top" src="img/team1.png">
-				<div class="card-body">
-					<h4 class="card-title">John Doe</h4>
-					<p class="card-text">John is an Interent
-						entrepreneur with almost 20 years of experience.
-					</p>
-					<a href="#" class="btn btn-outline-secondary">See Profile</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="card">
-				<img class="card-img-top" src="img/team2.png">
-				<div class="card-body">
-					<h4 class="card-title">Mary Jo</h4>
-					<p class="card-text">Mary is a designer with a almost 10 years
-					of digital design experience.</p>
-					<a href="#" class="btn btn-outline-secondary">See Profile</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="card">
-				<img class="card-img-top" src="img/team3.png">
-				<div class="card-body">
-					<h4 class="card-title">Phil Ho</h4>
-					<p class="card-text">Phil is an developer with over 5 years
-					of web development experience.</p>
-					<a href="#" class="btn btn-outline-secondary">See Profile</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--- Two Column Section -->
-<div class="container-fluid padding" data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-	<div class="row padding">
-		<div class="col-md-12 col-lg-6">
-			<h2>Our Philosophy</h2>
-			<p>We know that greatness in a disruptive era requires bold
-				ambition, curious talent and a culture that believes we're
-			    smarter together.</p>
-			<p>We approach every challenge hostically, with best-in-class
-				expertise in data, creativity, media, technology, search, social and
-				more. We call this Alchemy. It has the power to build our clients'
-				brands and transform their business. And white it may seem like
-				magic, we've got it down to a science.
-			</p>
-
-		</div>
-		<div class="col-lg-6">
-			<img src="img/bootstrap2.png" class="img-fluid">
-		</div>
-	</div>
-	<hr class="my-4">
-</div>
-
-<!--- Connect -->
-<div class="container-fluid padding">
-	<div class="row text-center padding">
-		<div class="col-12">
-			<h2>Connect</h2>
-		</div>
-		<div class="col-12 social padding">
-			<a href="#"><i class="fab fa-facebook"></i></a>
-			<a href="#"><i class="fab fa-twitter"></i></a>
-			<a href="#"><i class="fab fa-google-plus-g"></i></a>
-			<a href="#"><i class="fab fa-instagram"></i></a>
-			<a href="#"><i class="fab fa-youtube"></i></a>
-		</div>
-	</div>
-</div>
-
-<!--- Footer -->
-<footer>
-	<div class="container-fluid padding" data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-delay="50"
-		data-aos-duration="1000">
-		<div class="row text-center">
-			<div class="col-md-4 pt-0">
-				<div class="footer-image">
-				<img src="img/logo6.jpg"></div>
-				<hr class="light">
-				<p>555-555-5555</p>
-				<p>email@hhemail.com</p>
-				<p>69 Street Name</p>
-				<p>City, State, 888</p>
-			</div>
-			<div class="col-md-4">
-				<hr class="light">
-				<h5>Our hours</h5>
-				<hr class="light">
-				<p>Monday: 9am - 5pm</p>
-				<p>Saturday: 10am - 4pm</p>
-				<p>Sunday: Closed</p>
-			</div>
-			<div class="col-md-4">
-				<hr class="light">
-				<h5>Service Area</h5>
-				<hr class="light">
-				<p>City, State, 900</p>
-				<p>City, State, 800</p>
-				<p>City, State, 700</p>
-				<p>City, State, 600</p>
-			</div>
-			<div class="col-12">
-				<hr class="light-100">
-				<h5>&copy; Website Learning </h5>
-			</div>
-		</div>
-	</div>
-</footer>
-
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-AOS.init();
-</script>
-
+        function closeMenu() {
+            const menu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    </script>
 </body>
 </html>
