@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tonka Track & Field</title>
     <style>
+        /* Minnetonka Color Palette */
+        :root {
+            /* Primary Colors */
+            --minnetonka-blue: #003698;
+            --midnight: #002870;
+            --white: #ffffff;
+            --black: #000000;
+            
+            /* Secondary/Accent Colors */
+            --lake: #5395FF;
+            --sky: #8BB4FD;
+            --grape: rgb(108, 7, 135);
+            --sunbeam: rgb(241, 177, 51);
+            --mint: rgb(7, 143, 150);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +29,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--lake) 0%, var(--sky) 100%);
             color: #1a202c;
             line-height: 1.6;
             min-height: 100vh;
@@ -41,7 +57,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -62,7 +78,7 @@
         }
 
         .nav-links a:hover {
-            color: #667eea;
+            color: var(--minnetonka-blue);
         }
 
         .nav-links a::after {
@@ -72,7 +88,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
             transition: width 0.3s ease;
         }
 
@@ -113,7 +129,7 @@
             font-size: 3rem;
             font-weight: 800;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -127,19 +143,20 @@
 
         .cta-button {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: var(--sunbeam);
+            color: var(--black);
             padding: 1rem 2rem;
             border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(241, 177, 51, 0.4);
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 6px 20px rgba(241, 177, 51, 0.6);
+            filter: brightness(1.1);
         }
 
         .info-section {
@@ -162,11 +179,13 @@
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            border: 2px solid transparent;
         }
 
         .info-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(7, 143, 150, 0.4);
+            border: 2px solid var(--mint);
         }
 
         .info-icon {
@@ -212,7 +231,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -230,7 +249,7 @@
             width: 100%;
             height: 350px;
             border-radius: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -238,9 +257,16 @@
             font-size: 3rem;
             font-weight: 700;
             flex-shrink: 0;
-            grid-column: 1;
             align-self: center;
             overflow: hidden;
+        }
+
+        .card:nth-child(even) .athlete-image {
+            order: 2;
+        }
+
+        .card:nth-child(even) .athlete-card {
+            order: 1;
         }
 
         .athlete-image img {
@@ -253,20 +279,19 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            grid-column: 2;
         }
 
         .card h2 {
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1a202c;
+            margin-bottom: 0.5rem;
+            color: var(--midnight);
         }
 
         .card p {
             color: #4a5568;
             line-height: 1.8;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
         }
 
         footer {
@@ -337,17 +362,31 @@
                 padding: 2rem;
             }
 
+            .card h2 {
+                font-size: 2rem;
+            }
+
+            .card p {
+                font-size: 1.1rem;
+            }
+
             .card {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
 
+            .card:nth-child(even) .athlete-image {
+                order: 0;
+            }
+
+            .card:nth-child(even) .athlete-card {
+                order: 0;
+            }
+
             .athlete-image {
-                width: 120px;
-                height: 120px;
-                font-size: 2.5rem;
+                width: 100%;
+                height: 300px;
                 grid-column: 1;
-                justify-self: center;
             }
 
             .athlete-card {
@@ -444,7 +483,9 @@
         </div>
 
         <div class="card">
-            <div class="athlete-image">CK</div>
+            <div class="athlete-image">
+                <img src="https://i.imgur.com/f0OXFiQ.jpg" alt="Claire Kohler">
+            </div>
             <div class="athlete-card">
                 <h2>Claire Kohler</h2>
                 <p>2024 Gatorade Minnesota Track Athlete of the Year! A true champion both on and off the track. We're incredibly proud of your achievements!</p>
@@ -459,6 +500,16 @@
                 <h2>Sprint Medley Relay Team</h2>
                 <p>Our All-American Sprint Medley relay team set a Hayward Field high school record at Nike Nationals in June 2024!</p>
                 <p style="margin-top: 1rem; font-weight: 600;">Team: Evie Malec, Claire Kohler, Zeal Kuku, Charlotte Roehl</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="athlete-image">
+                <img src="https://i.imgur.com/vjx6IiD.jpg" alt="Matt Wilkinson">
+            </div>
+            <div class="athlete-card">
+                <h2>Matt Wilkinson</h2>
+                <p>Former Minnetonka High School, Carleton, Gophers track athlete Matthew Wilkinson finished second in the 3000-meter steeplechase final at the U.S. track and field trials and claimed a spot in the Olympics.</p>
             </div>
         </div>
     </div>
