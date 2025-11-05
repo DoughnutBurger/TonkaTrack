@@ -258,6 +258,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem; /* Adds space between text and button */
             transition: all 0.3s ease;
         }
 
@@ -471,39 +472,10 @@
 
         <div id="files-tab" class="tab-content">
             <h2>Team Files & Resources</h2>
-            
-            <div class="file-list">
-                <div class="file-item">
-                    <div>
-                        <div class="file-name">2024-2025 Meet Schedule</div>
-                        <div class="file-description">Complete schedule with dates, times, and locations</div>
-                    </div>
-                    <button class="download-button">Download</button>
-                </div>
-
-                <div class="file-item">
-                    <div>
-                        <div class="file-name">Training Plan</div>
-                        <div class="file-description">Off-season and in-season training guidelines</div>
-                    </div>
-                    <button class="download-button">Download</button>
-                </div>
-
-                <div class="file-item">
-                    <div>
-                        <div class="file-name">Team Handbook</div>
-                        <div class="file-description">Team rules, expectations, and information</div>
-                    </div>
-                    <button class="download-button">Download</button>
-                </div>
-
-                <div class="file-item">
-                    <div>
-                        <div class="file-name">Nutrition Guide</div>
-                        <div class="file-description">Tips for optimal performance and recovery</div>
-                    </div>
-                    <button class="download-button">Download</button>
-                </div>
+            <p id="loading-message" style="color: var(--sky);">Loading files...</p>
+        
+            <div class="file-list" id="file-list">
+                <!-- Files will be loaded here dynamically -->
             </div>
         </div>
     </div>
@@ -542,6 +514,84 @@
             // Add active class to clicked button
             event.target.classList.add('active');
         }
+
+        // Google Apps Script Web App URL
+            const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUyTldRpyDB5Iiw8h20glKK7zY1pEt-53X6YMcw4JMR0Kki-5dZFiXU7agk5FzHoJK/exec';
+
+            async function loadFiles() {
+                const fileListContainer = document.getElementById('file-list');
+                const loadingMessage = document.getElementById('loading-message');
+
+                try {
+                    const response = await fetch(APPS_SCRIPT_URL);
+                    const data = await response.json();
+
+                    if (data.success && data.files) {
+                        loadingMessage.style.display = 'none';
+
+                        if (data.files.length === 0) {
+                            fileListContainer.innerHTML = '<p style="color: var(--sky);">No files available at this time.</p>';
+                            return;
+                        }
+
+                        // Clear existing content
+                        fileListContainer.innerHTML = '';
+
+                        // Create file items
+                        data.files.forEach(file => {
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'file-item';
+
+                            // Format file size
+                            const fileSizeKB = (file.size / 1024).toFixed(2);
+                            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                            const displaySize = file.size > 1024 * 1024 ? `${fileSizeMB} MB` : `${fileSizeKB} KB`;
+
+                            fileItem.innerHTML = `
+                    <div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-description">${file.description} • ${displaySize}</div>
+                    </div>
+                    <button class="download-button" onclick="window.open('${file.downloadUrl}', '_blank')">Download</button>
+                `;
+
+                            fileListContainer.appendChild(fileItem);
+                        });
+                    } else {
+                        loadingMessage.textContent = 'Error loading files. Please try again later.';
+                        loadingMessage.style.color = '#ff6b6b';
+                    }
+                } catch (error) {
+                    console.error('Error fetching files:', error);
+                    loadingMessage.textContent = 'Unable to load files. Please check your connection.';
+                    loadingMessage.style.color = '#ff6b6b';
+                }
+            }
+
+            // Load files when the page loads
+            document.addEventListener('DOMContentLoaded', loadFiles);
+
+            // Also reload files when switching to the files tab
+            function showTab(tabName) {
+                // Hide all tabs
+                const tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(tab => tab.classList.remove('active'));
+
+                // Remove active class from all buttons
+                const buttons = document.querySelectorAll('.tab-button');
+                buttons.forEach(button => button.classList.remove('active'));
+
+                // Show selected tab
+                document.getElementById(tabName + '-tab').classList.add('active');
+
+                // Add active class to clicked button
+                event.target.classList.add('active');
+
+                // Reload files if switching to files tab
+                if (tabName === 'files') {
+                    loadFiles();
+                }
+            }
     </script>
 </body>
 </html>

@@ -29,6 +29,7 @@
 
         html, body {
             height: 100%;
+            
         }
 
         body {
@@ -38,14 +39,20 @@
             background-size: cover;
             color: #1a202c;
             line-height: 1.6;
+            overscroll-behavior: none;
+            
+        }
+        .page-wrapper {
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+            overscroll-behavior: none;
         }
 
         .nav-bar {
             background: rgb(255, 255, 255);
             padding: 1rem 0;
-            position: fixed;  /* Changed from sticky to fixed */
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
@@ -123,7 +130,8 @@
 
         .main-content {
             flex: 1 0 auto;
-        }
+             padding-top: 70px; /* Adjust this value to match your navbar height */
+    }
 
         .hero {
             max-width: 1200px;
@@ -490,102 +498,104 @@
     </style>
 </head>
 <body>
-    <nav class="nav-bar">
-        <div class="nav-content">
-            <div class="logo">🏃 TONKA TRACK</div>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+    <div class="page-wrapper">
+        <nav class="nav-bar">
+            <div class="nav-content">
+                <div class="logo">🏃 TONKA TRACK</div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links" id="navMenu">
+                    <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                    <li><a href="#news" onclick="closeMenu()">News</a></li>
+                    <li><a href="#sports" onclick="closeMenu()">Sports</a></li>
+                    <li><a href="#mtfcca" onclick="closeMenu()">MTFCCA</a></li>
+                    <li><a href="#events" onclick="closeMenu()">Events</a></li>
+                    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+                </ul>
             </div>
-            <ul class="nav-links" id="navMenu">
-                <li><a href="#home" onclick="closeMenu()">Home</a></li>
-                <li><a href="#news" onclick="closeMenu()">News</a></li>
-                <li><a href="#sports" onclick="closeMenu()">Sports</a></li>
-                <li><a href="#mtfcca" onclick="closeMenu()">MTFCCA</a></li>
-                <li><a href="#events" onclick="closeMenu()">Events</a></li>
-                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="main-content">
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Welcome to Tonka Track & Field</h1>
-                <p>Excellence in athletics, dedication in training, champions in character. Join us as we celebrate our athletes' achievements and build a community of excellence.</p>
-                <a href="#learn-more" class="cta-button">Learn More</a>
-            </div>
-        </section>
-
-        <section class="info-section">
-            <div class="sports-grid">
-                <div class="info-item">
-                    <div class="info-icon">🏃‍♀️</div>
-                    <h3>Girls Cross Country</h3>
+        </nav>
+        
+        <div class="main-content">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to Tonka Track & Field</h1>
+                    <p>Excellence in athletics, dedication in training, champions in character. Join us as we celebrate our athletes' achievements and build a community of excellence.</p>
+                    <a href="#learn-more" class="cta-button">Learn More</a>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon">🏃‍♂️</div>
-                    <h3>Boys Cross Country</h3>
+            </section>
+    
+            <section class="info-section">
+                <div class="sports-grid">
+                    <div class="info-item">
+                        <div class="info-icon">🏃‍♀️</div>
+                        <h3>Girls Cross Country</h3>
+                    </div>
+                    <div class="info-item" onclick="window.location.href='boys-cross-country.html'">
+                        <div class="info-icon">🏃‍♂️</div>
+                            <h3>Boys Cross Country</h3>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🏃‍♀️</div>
+                        <h3>Girls Track & Field</h3>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🏃‍♂️</div>
+                        <h3>Boys Track & Field</h3>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🤝</div>
+                        <h3>MTFCCA</h3>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📅</div>
+                        <h3>Events</h3>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon">🏃‍♀️</div>
-                    <h3>Girls Track & Field</h3>
+            </section>
+    
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="athlete-image">
+                        <img src="images/shawn-fries-all-american.webp" alt="Sean Fries">
+                    </div>
+                    <div class="athlete-card">
+                        <h2>Sean Fries</h2>
+                        <p>9th place at Footlocker Nationals, earning All-American Status. An incredible achievement representing Tonka Track at the highest level.</p>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon">🏃‍♂️</div>
-                    <h3>Boys Track & Field</h3>
+    
+                <div class="card">
+                    <div class="athlete-image">
+                        <img src="images/claire-kohler-gatorade-medium.webp" alt="Claire Kohler">
+                    </div>
+                    <div class="athlete-card">
+                        <h2>Claire Kohler</h2>
+                        <p>2024 Gatorade Minnesota Track Athlete of the Year! A true champion both on and off the track. We're incredibly proud of your achievements!</p>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon">🤝</div>
-                    <h3>MTFCCA</h3>
+    
+                <div class="card">
+                    <div class="athlete-image">
+                        <img src="images/all-american-sprint-medley-medium.webp" alt="Sprint Medley Relay Team">
+                    </div>
+                    <div class="athlete-card">
+                        <h2>Sprint Medley Relay Team</h2>
+                        <p>Our All-American Sprint Medley relay team set a Hayward Field high school record at Nike Nationals in June 2024!</p>
+                        <p style="margin-top: 1rem; font-weight: 600;">Team: Evie Malec, Claire Kohler, Zeal Kuku, Charlotte Roehl</p>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon">📅</div>
-                    <h3>Events</h3>
-                </div>
-            </div>
-        </section>
-
-        <div class="cards-grid">
-            <div class="card">
-                <div class="athlete-image">
-                    <img src="https://i.imgur.com/C0U97vP.jpg" alt="Sean Fries">
-                </div>
-                <div class="athlete-card">
-                    <h2>Sean Fries</h2>
-                    <p>9th place at Footlocker Nationals, earning All-American Status. An incredible achievement representing Tonka Track at the highest level.</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="athlete-image">
-                    <img src="https://i.imgur.com/f0OXFiQ.jpg" alt="Claire Kohler">
-                </div>
-                <div class="athlete-card">
-                    <h2>Claire Kohler</h2>
-                    <p>2024 Gatorade Minnesota Track Athlete of the Year! A true champion both on and off the track. We're incredibly proud of your achievements!</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="athlete-image">
-                    <img src="https://i.imgur.com/30rqtDn.jpg" alt="Sprint Medley Relay Team">
-                </div>
-                <div class="athlete-card">
-                    <h2>Sprint Medley Relay Team</h2>
-                    <p>Our All-American Sprint Medley relay team set a Hayward Field high school record at Nike Nationals in June 2024!</p>
-                    <p style="margin-top: 1rem; font-weight: 600;">Team: Evie Malec, Claire Kohler, Zeal Kuku, Charlotte Roehl</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="athlete-image">
-                    <img src="https://i.imgur.com/vjx6IiD.jpg" alt="Matt Wilkinson">
-                </div>
-                <div class="athlete-card">
-                    <h2>Matt Wilkinson</h2>
-                    <p>Former Minnetonka High School, Carleton, Gophers track athlete Matthew Wilkinson finished second in the 3000-meter steeplechase final at the U.S. track and field trials and claimed a spot in the Olympics.</p>
+    
+                <div class="card">
+                    <div class="athlete-image">
+                        <img src="images/matt-wilkinson.webp" alt="Matt Wilkinson">
+                    </div>
+                    <div class="athlete-card">
+                        <h2>Matt Wilkinson</h2>
+                        <p>Former Minnetonka High School, Carleton, Gophers track athlete Matthew Wilkinson finished second in the 3000-meter steeplechase final at the U.S. track and field trials and claimed a spot in the Olympics.</p>
+                    </div>
                 </div>
             </div>
         </div>
