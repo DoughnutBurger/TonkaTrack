@@ -432,19 +432,33 @@
             .photo-modal {
                 display: none;
                 position: fixed;
-                z-index: 2000;
+                z-index: 3000;
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.9);
+                background: rgba(0, 0, 0, 0.95);
                 animation: fadeIn 0.3s ease;
             }
 
             .photo-modal.active {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
+            }
+
+            .photo-modal-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+                z-index: 3001;
             }
 
             .photo-modal-content {
@@ -454,19 +468,166 @@
             }
 
             .photo-modal-close {
-                position: absolute;
-                top: 20px;
-                right: 40px;
-                color: white;
-                font-size: 40px;
-                font-weight: bold;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid var(--white);
+                color: var(--white);
+                font-size: 1.5rem;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 cursor: pointer;
-                z-index: 2001;
+                transition: all 0.3s ease;
             }
 
             .photo-modal-close:hover {
-                color: var(--sunbeam);
+                background: var(--white);
+                color: var(--black);
+                transform: rotate(90deg);
             }
+
+            .photo-modal-close:hover svg path {
+                stroke: var(--black);
+            }
+
+            .photo-modal-actions {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .photo-action-button {
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid var(--white);
+                color: var(--white);
+                padding: 0.75rem 1.5rem;
+                border-radius: 12px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .photo-action-button:hover {
+                background: var(--sunbeam);
+                color: var(--black);
+                border-color: var(--sunbeam);
+                transform: translateY(-2px);
+            }
+
+            .photo-modal-content-wrapper {
+                max-width: 90vw;
+                max-height: 85vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .photo-modal-content {
+                max-width: 100%;
+                max-height: 85vh;
+                object-fit: contain;
+                border-radius: 8px;
+            }
+
+            .photo-modal-caption {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                color: white;
+                text-align: center;
+                padding: 1.5rem;
+                font-size: 1.2rem;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+                z-index: 3001;
+            }
+
+            /* Hide body scroll when modal is open */
+            body.modal-open {
+                overflow: hidden;
+            }
+
+            /* Navigation arrows for gallery */
+            .photo-nav-arrow {
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid var(--white);
+                color: var(--white);
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 3001;
+            }
+
+            .photo-nav-arrow:hover {
+                background: var(--white);
+                color: var(--black);
+            }
+
+            .photo-nav-arrow.left {
+                left: 2rem;
+            }
+
+            .photo-nav-arrow.right {
+                right: 2rem;
+            }
+
+            /* Loading spinner */
+            .photo-loading {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: var(--white);
+                font-size: 2rem;
+            }
+
+            @media (max-width: 768px) {
+                .photo-modal-header {
+                    padding: 0.75rem 1rem;
+                }
+
+                .photo-action-button {
+                    padding: 0.5rem 1rem;
+                    font-size: 0.9rem;
+                }
+
+                .photo-action-button span {
+                    display: none; /* Hide text on mobile, keep icons */
+                }
+
+                .photo-nav-arrow {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 1.5rem;
+                }
+
+                .photo-nav-arrow.left {
+                    left: 1rem;
+                }
+
+                .photo-nav-arrow.right {
+                    right: 1rem;
+                }
+
+                .photo-modal-content {
+                    max-height: 80vh;
+                }
+            }
+
             /* Albums Grid */
 
             .albums-grid {
@@ -652,6 +813,38 @@
                 <!-- Files will be loaded here dynamically -->
             </div>
         </div>
+
+        <!-- Photo Modal -->
+        <div id="photo-modal" class="photo-modal">
+            <div class="photo-modal-header">
+                <button class="photo-modal-close" id="modal-close-btn" onclick="closePhotoModal()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+                <div class="photo-modal-actions">
+                    <button class="photo-action-button" id="download-btn">
+                        <span>📥</span>
+                        <span>Download</span>
+                    </button>
+                    <button class="photo-action-button" id="share-btn">
+                        <span>🔗</span>
+                        <span>Share</span>
+                    </button>
+                </div>
+            </div>
+        
+            <div class="photo-nav-arrow left" id="prev-photo" onclick="navigatePhoto(-1)" style="display: none;">‹</div>
+        
+            <div class="photo-modal-content-wrapper">
+                <div class="photo-loading" id="photo-loading">Loading...</div>
+                <img class="photo-modal-content" id="modal-image" style="display: none;">
+            </div>
+        
+            <div class="photo-nav-arrow right" id="next-photo" onclick="navigatePhoto(1)" style="display: none;">›</div>
+        
+            <div id="modal-caption" class="photo-modal-caption"></div>
+        </div>
     </div>
 
     <footer>
@@ -770,8 +963,14 @@
             // Photo Albums functionality
                 const ALBUMS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUyTldRpyDB5Iiw8h20glKK7zY1pEt-53X6YMcw4JMR0Kki-5dZFiXU7agk5FzHoJK/exec?action=photoAlbums';
                 const ALBUM_PHOTOS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUyTldRpyDB5Iiw8h20glKK7zY1pEt-53X6YMcw4JMR0Kki-5dZFiXU7agk5FzHoJK/exec?action=albumPhotos';
+                const ALL_PHOTOS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUyTldRpyDB5Iiw8h20glKK7zY1pEt-53X6YMcw4JMR0Kki-5dZFiXU7agk5FzHoJK/exec?action=allPhotos';
 
                 let currentAlbumId = null;
+                let currentPhotoIndex = 0;
+                let currentPhotosArray = [];
+                let imageCache = new Map();
+
+                // ... (keep existing preloadImage functions)
 
                 async function loadPhotoAlbums() {
                     const albumsGrid = document.getElementById('albums-grid');
@@ -784,26 +983,26 @@
                         if (data.success && data.albums) {
                             loadingMessage.style.display = 'none';
 
-                            if (data.albums.length === 0 && data.rootPhotoCount === 0) {
+                            if (data.albums.length === 0 && data.allPhotosCount === 0) {
                                 albumsGrid.innerHTML = '<p style="color: var(--sky);">No photo albums yet. Check back soon!</p>';
                                 return;
                             }
 
                             albumsGrid.innerHTML = '';
 
-                            // Add "All Photos" album if there are root photos
-                            if (data.rootPhotoCount > 0) {
+                            // Add "All Photos" album with all photos from everywhere
+                            if (data.allPhotosCount > 0) {
                                 const allPhotosAlbum = createAlbumItem({
-                                    id: data.mainFolderId,
+                                    id: 'ALL_PHOTOS', // Special ID
                                     name: 'All Photos',
-                                    description: `${data.rootPhotoCount} photos`,
-                                    photoCount: data.rootPhotoCount,
-                                    coverPhotoUrl: null
+                                    description: `${data.allPhotosCount} photos`,
+                                    photoCount: data.allPhotosCount,
+                                    coverPhotoUrl: data.allPhotosCover ? `https://drive.google.com/thumbnail?id=${data.allPhotosCover}&sz=w400` : null
                                 });
                                 albumsGrid.appendChild(allPhotosAlbum);
                             }
 
-                            // Add each album
+                            // Add each subfolder album
                             data.albums.forEach(album => {
                                 const albumItem = createAlbumItem(album);
                                 albumsGrid.appendChild(albumItem);
@@ -819,6 +1018,17 @@
                     }
                 }
 
+                // Preload adjacent images for smooth navigation
+                function preloadAdjacentImages(index) {
+                    if (index > 0) {
+                        preloadImage(currentPhotosArray[index - 1].fullUrl);
+                    }
+                    if (index < currentPhotosArray.length - 1) {
+                        preloadImage(currentPhotosArray[index + 1].fullUrl);
+                    }
+                }
+
+
                 function createAlbumItem(album) {
                     const albumItem = document.createElement('div');
                     albumItem.className = 'album-item';
@@ -831,6 +1041,7 @@
                         const img = document.createElement('img');
                         img.src = album.coverPhotoUrl;
                         img.alt = album.name;
+                        img.loading = 'lazy';
                         cover.appendChild(img);
                     } else {
                         const placeholder = document.createElement('div');
@@ -862,7 +1073,6 @@
                 async function openAlbum(albumId, albumName) {
                     currentAlbumId = albumId;
 
-                    // Hide albums view, show photos view
                     document.getElementById('albums-view').style.display = 'none';
                     document.getElementById('album-photos-view').style.display = 'block';
                     document.getElementById('album-title').textContent = albumName;
@@ -875,47 +1085,82 @@
                     loadingMessage.textContent = 'Loading photos...';
                     loadingMessage.style.color = 'var(--sky)';
 
-                    try {
-                        const response = await fetch(`${ALBUM_PHOTOS_SCRIPT_URL}&folderId=${albumId}`);
-                        const data = await response.json();
+                    let retries = 3;
+                    while (retries > 0) {
+                        try {
+                            let response;
 
-                        if (data.success && data.photos) {
-                            loadingMessage.style.display = 'none';
-
-                            if (data.photos.length === 0) {
-                                photoGrid.innerHTML = '<p style="color: var(--sky);">No photos in this album yet.</p>';
-                                return;
+                            // Check if this is the "All Photos" album
+                            if (albumId === 'ALL_PHOTOS') {
+                                response = await fetch(ALL_PHOTOS_SCRIPT_URL);
+                            } else {
+                                response = await fetch(`${ALBUM_PHOTOS_SCRIPT_URL}&folderId=${albumId}`);
                             }
 
-                            data.photos.forEach(photo => {
-                                const photoItem = document.createElement('div');
-                                photoItem.className = 'photo-item';
-                                photoItem.onclick = () => openPhotoModal(photo.fullUrl, photo.caption);
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
 
-                                const img = document.createElement('img');
-                                img.src = photo.thumbnailUrl;
-                                img.alt = photo.name;
-                                img.loading = 'lazy';
+                            const data = await response.json();
 
-                                photoItem.appendChild(img);
+                            if (data.success && data.photos) {
+                                loadingMessage.style.display = 'none';
 
-                                if (photo.caption) {
-                                    const caption = document.createElement('div');
-                                    caption.className = 'photo-caption';
-                                    caption.textContent = photo.caption;
-                                    photoItem.appendChild(caption);
+                                if (data.photos.length === 0) {
+                                    photoGrid.innerHTML = '<p style="color: var(--sky);">No photos in this album yet.</p>';
+                                    return;
                                 }
 
-                                photoGrid.appendChild(photoItem);
-                            });
-                        } else {
-                            loadingMessage.textContent = 'Error loading photos. Please try again later.';
-                            loadingMessage.style.color = '#ff6b6b';
+                                currentPhotosArray = data.photos;
+
+                                data.photos.forEach((photo, index) => {
+                                    const photoItem = document.createElement('div');
+                                    photoItem.className = 'photo-item';
+                                    photoItem.onclick = () => openPhotoModal(index);
+
+                                    const img = document.createElement('img');
+                                    img.src = photo.thumbnailUrl;
+                                    img.alt = photo.name;
+                                    img.loading = 'lazy';
+
+                                    // Add error handling for thumbnails
+                                    img.onerror = function () {
+                                        this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" font-size="40" text-anchor="middle" dy=".3em">📷</text></svg>';
+                                    };
+
+                                    photoItem.appendChild(img);
+
+                                    if (photo.caption) {
+                                        const caption = document.createElement('div');
+                                        caption.className = 'photo-caption';
+                                        caption.textContent = photo.caption;
+                                        photoItem.appendChild(caption);
+                                    }
+
+                                    photoGrid.appendChild(photoItem);
+                                });
+
+                                // Preload first few images with delay
+                                for (let i = 0; i < Math.min(3, data.photos.length); i++) {
+                                    setTimeout(() => preloadImage(data.photos[i].fullUrl, data.photos[i].fallbackUrl), i * 500);
+                                }
+
+                                return; // Success, exit retry loop
+                            } else {
+                                throw new Error(data.error || 'Unknown error');
+                            }
+                        } catch (error) {
+                            console.error(`Error fetching album photos (${retries} retries left):`, error);
+                            retries--;
+
+                            if (retries > 0) {
+                                loadingMessage.textContent = `Loading photos... (retrying)`;
+                                await new Promise(resolve => setTimeout(resolve, 1000));
+                            } else {
+                                loadingMessage.textContent = 'Error loading photos. Please try again later.';
+                                loadingMessage.style.color = '#ff6b6b';
+                            }
                         }
-                    } catch (error) {
-                        console.error('Error fetching album photos:', error);
-                        loadingMessage.textContent = 'Unable to load photos. Please check your connection.';
-                        loadingMessage.style.color = '#ff6b6b';
                     }
                 }
 
@@ -923,7 +1168,178 @@
                     document.getElementById('albums-view').style.display = 'block';
                     document.getElementById('album-photos-view').style.display = 'none';
                     currentAlbumId = null;
+                    currentPhotosArray = [];
                 }
+
+                async function openPhotoModal(index) {
+                    currentPhotoIndex = index;
+                    const photo = currentPhotosArray[index];
+
+                    const modal = document.getElementById('photo-modal');
+                    const modalImg = document.getElementById('modal-image');
+                    const modalCaption = document.getElementById('modal-caption');
+                    const loading = document.getElementById('photo-loading');
+                    const downloadBtn = document.getElementById('download-btn');
+                    const shareBtn = document.getElementById('share-btn');
+
+                    // Hide navbar
+                    document.querySelector('.nav-bar').style.display = 'none';
+
+                    // Prevent body scroll
+                    document.body.classList.add('modal-open');
+
+                    modal.classList.add('active');
+                    modalImg.style.display = 'none';
+                    loading.style.display = 'block';
+                    loading.textContent = 'Loading...';
+
+                    // Show/hide navigation arrows
+                    document.getElementById('prev-photo').style.display = index > 0 ? 'flex' : 'none';
+                    document.getElementById('next-photo').style.display = index < currentPhotosArray.length - 1 ? 'flex' : 'none';
+
+                    // Set up download button
+                    downloadBtn.onclick = () => downloadPhoto(photo.downloadUrl, photo.name);
+
+                    // Set up share button
+                    shareBtn.onclick = () => sharePhoto(photo);
+
+                    // Load full resolution image with retries
+                    let retries = 3;
+                    let imageLoaded = false;
+
+                    while (retries > 0 && !imageLoaded) {
+                        try {
+                            // Try using cached image first
+                            if (imageCache.has(photo.fullUrl)) {
+                                modalImg.src = photo.fullUrl;
+                                modalImg.style.display = 'block';
+                                loading.style.display = 'none';
+                                imageLoaded = true;
+                            } else {
+                                // Load new image
+                                const img = new Image();
+
+                                await new Promise((resolve, reject) => {
+                                    const timeout = setTimeout(() => {
+                                        reject(new Error('Image load timeout'));
+                                    }, 10000); // 10 second timeout
+
+                                    img.onload = () => {
+                                        clearTimeout(timeout);
+                                        imageCache.set(photo.fullUrl, img);
+                                        resolve();
+                                    };
+
+                                    img.onerror = () => {
+                                        clearTimeout(timeout);
+                                        reject(new Error('Image load failed'));
+                                    };
+
+                                    img.src = photo.fullUrl;
+                                });
+
+                                modalImg.src = photo.fullUrl;
+                                modalImg.style.display = 'block';
+                                loading.style.display = 'none';
+                                imageLoaded = true;
+                            }
+
+                            // Preload adjacent images with delay
+                            setTimeout(() => preloadAdjacentImages(index), 500);
+
+                        } catch (error) {
+                            console.error(`Error loading photo (${retries} retries left):`, error);
+                            retries--;
+
+                            if (retries > 0) {
+                                loading.textContent = 'Loading... (retrying)';
+                                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+                            } else {
+                                // Final fallback: try to show thumbnail
+                                loading.textContent = 'Loading full image failed, showing preview...';
+                                modalImg.src = photo.thumbnailUrl;
+                                modalImg.style.display = 'block';
+
+                                setTimeout(() => {
+                                    loading.style.display = 'none';
+                                }, 2000);
+                            }
+                        }
+                    }
+
+                    // Set caption
+                    if (photo.caption) {
+                        modalCaption.textContent = photo.caption;
+                        modalCaption.style.display = 'block';
+                    } else {
+                        modalCaption.style.display = 'none';
+                    }
+                }
+
+                function navigatePhoto(direction) {
+                    const newIndex = currentPhotoIndex + direction;
+                    if (newIndex >= 0 && newIndex < currentPhotosArray.length) {
+                        openPhotoModal(newIndex);
+                    }
+                }
+
+                function closePhotoModal() {
+                    const modal = document.getElementById('photo-modal');
+                    modal.classList.remove('active');
+
+                    // Show navbar again
+                    document.querySelector('.nav-bar').style.display = 'block';
+
+                    // Re-enable body scroll
+                    document.body.classList.remove('modal-open');
+                }
+
+                function downloadPhoto(url, filename) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+
+                async function sharePhoto(photo) {
+                    const shareData = {
+                        title: photo.name,
+                        text: photo.caption || 'Check out this photo from Tonka Track!',
+                        url: photo.fullUrl
+                    };
+
+                    try {
+                        if (navigator.share) {
+                            // Use native share if available (mobile)
+                            await navigator.share(shareData);
+                        } else {
+                            // Fallback: Copy link to clipboard
+                            await navigator.clipboard.writeText(photo.fullUrl);
+                            alert('Link copied to clipboard!');
+                        }
+                    } catch (error) {
+                        console.error('Error sharing:', error);
+                        // Fallback: show share URL
+                        prompt('Copy this link to share:', photo.fullUrl);
+                    }
+                }
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    const modal = document.getElementById('photo-modal');
+                    if (modal.classList.contains('active')) {
+                        if (e.key === 'Escape') {
+                            closePhotoModal();
+                        } else if (e.key === 'ArrowLeft') {
+                            navigatePhoto(-1);
+                        } else if (e.key === 'ArrowRight') {
+                            navigatePhoto(1);
+                        }
+                    }
+                });
 
                 // Update showTab function
                 function showTab(tabName) {
@@ -939,33 +1355,10 @@
                     if (tabName === 'files') {
                         loadFiles();
                     } else if (tabName === 'photos') {
-                        // Reset to albums view
                         document.getElementById('albums-view').style.display = 'block';
                         document.getElementById('album-photos-view').style.display = 'none';
                         loadPhotoAlbums();
                     }
-                }
-
-                // Keep existing photo modal functions
-                function openPhotoModal(imageUrl, caption) {
-                    const modal = document.getElementById('photo-modal');
-                    const modalImg = document.getElementById('modal-image');
-                    const modalCaption = document.getElementById('modal-caption');
-
-                    modal.classList.add('active');
-                    modalImg.src = imageUrl;
-
-                    if (caption) {
-                        modalCaption.textContent = caption;
-                        modalCaption.style.display = 'block';
-                    } else {
-                        modalCaption.style.display = 'none';
-                    }
-                }
-
-                function closePhotoModal() {
-                    const modal = document.getElementById('photo-modal');
-                    modal.classList.remove('active');
                 }
 
 
