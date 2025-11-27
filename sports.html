@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports - Tonka Track & Field</title>
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    <style>
+        /* Minnetonka Color Palette */
+        :root {
+            --minnetonka-blue: #003698;
+            --midnight: #002870;
+            --white: #ffffff;
+            --black: #000000;
+            --lake: #5395FF;
+            --sky: #8BB4FD;
+            --grape: rgb(108, 7, 135);
+            --sunbeam: rgb(241, 177, 51);
+            --mint: rgb(7, 143, 150);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--white);
+            color: #1a202c;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-bar {
+            background: rgb(255, 255, 255);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--minnetonka-blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #4a5568;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--minnetonka-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #4a5568;
+        }
+
+        .teams-container {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 54, 152, 0.3) transparent;
+        }
+
+        .teams-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .teams-container::-webkit-scrollbar-track {
+            background: rgba(0, 54, 152, 0.1);
+            border-radius: 10px;
+        }
+
+        .teams-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 54, 152, 0.3);
+            border-radius: 10px;
+        }
+
+        .teams-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 54, 152, 0.5);
+        }
+
+        .team-card {
+            background: var(--minnetonka-blue);
+            border-radius: 20px;
+            padding: 40px;
+            min-width: 300px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            scroll-snap-align: start;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .team-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .team-card h2 {
+            color: var(--white);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .team-card p {
+            color: var(--sky);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .team-button {
+            background: var(--sunbeam);
+            color: var(--black);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(241, 177, 51, 0.4);
+        }
+
+        .team-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(241, 177, 51, 0.6);
+            filter: brightness(1.1);
+        }
+
+        footer {
+            background: rgba(26, 32, 44, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 900px) {
+            .nav-content {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                gap: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                width: 100%;
+            }
+
+            .nav-links.active {
+                max-height: 400px;
+                opacity: 1;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .teams-container {
+                gap: 20px;
+            }
+
+            .team-card {
+                min-width: 280px;
+                padding: 30px;
+            }
+
+            .team-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .team-icon {
+                font-size: 3rem;
+            }
+
+            footer {
+                padding: 1.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Desktop - show all 4 cards */
+        @media (min-width: 1200px) {
+            .teams-container {
+                overflow-x: visible;
+            }
+
+            .team-card {
+                min-width: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .team-card {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🏃 TONKA TRACK</a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="index.html" onclick="closeMenu()">Home</a></li>
+                <li><a href="news.html" onclick="closeMenu()">News</a></li>
+                <li><a href="sports.html" onclick="closeMenu()">Sports</a></li>
+                <li><a href="mtfcca.html" onclick="closeMenu()">MTFCCA</a></li>
+                <li><a href="#events" onclick="closeMenu()">Events</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Our Teams</h1>
+            <p>Excellence in every event, every season</p>
+        </div>
+
+        <div class="teams-container">
+            <div class="team-card">
+                <div class="team-icon">🏃‍♀️</div>
+                <h2>Girls Cross Country</h2>
+                <p>Building champions through dedication, teamwork, and perseverance on every trail.</p>
+                <a href="girls-cross-country.html" class="team-button">View Team →</a>
+            </div>
+
+            <div class="team-card">
+                <div class="team-icon">🏃‍♂️</div>
+                <h2>Boys Cross Country</h2>
+                <p>Pushing limits and achieving excellence through hard work and determination.</p>
+                <a href="boys-cross-country.html" class="team-button">View Team →</a>
+            </div>
+
+            <div class="team-card">
+                <div class="team-icon">⚡</div>
+                <h2>Girls Track & Field</h2>
+                <p>Speed, strength, and spirit—excelling in every event, every season.</p>
+                <a href="girls-track.html" class="team-button">View Team →</a>
+            </div>
+
+            <div class="team-card">
+                <div class="team-icon">🏅</div>
+                <h2>Boys Track & Field</h2>
+                <p>Driven by passion and powered by performance in all track and field events.</p>
+                <a href="boys-track.html" class="team-button">View Team →</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Tonka Track & Field. Building champions, one stride at a time.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>
