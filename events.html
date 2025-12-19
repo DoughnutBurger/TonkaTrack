@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Tonka Track & Field</title>
+    <style>
+        :root {
+            --minnetonka-blue: #003698;
+            --midnight: #002870;
+            --white: #ffffff;
+            --black: #000000;
+            --lake: #5395FF;
+            --sky: #8BB4FD;
+            --grape: rgb(108, 7, 135);
+            --sunbeam: rgb(241, 177, 51);
+            --mint: rgb(7, 143, 150);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--white);
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        .nav-bar {
+            background: rgb(255, 255, 255);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--minnetonka-blue) 0%, var(--midnight) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--minnetonka-blue);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #4a5568;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .page-header {
+            background: var(--white);
+            color: var(--minnetonka-blue);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #4a5568;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: var(--minnetonka-blue);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 54, 152, 0.4);
+        }
+
+        .tab-button.active {
+            background: var(--sunbeam);
+            color: var(--black);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .event-card {
+            background: var(--minnetonka-blue);
+            border-radius: 20px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 2rem;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-date-box {
+            background: var(--white);
+            color: var(--minnetonka-blue);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .event-month {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .event-day {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .event-info h3 {
+            color: var(--white);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-info p {
+            color: var(--sky);
+            font-size: 1.1rem;
+        }
+
+        .event-arrow {
+            color: var(--sunbeam);
+            font-size: 2rem;
+        }
+
+        .calendar-container {
+            background: var(--minnetonka-blue);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-header h2 {
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .calendar-nav button {
+            background: var(--sunbeam);
+            color: var(--black);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav button:hover {
+            filter: brightness(1.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            color: var(--sunbeam);
+            text-align: center;
+            font-weight: 600;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--sky);
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .calendar-day.has-event {
+            background: var(--sunbeam);
+            color: var(--black);
+            font-weight: 700;
+        }
+
+        .calendar-day.has-event:hover {
+            transform: scale(1.05);
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--minnetonka-blue);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0rem;
+            right: 0rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--sunbeam);
+            color: var(--black);
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: var(--white);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-date {
+            color: var(--sunbeam);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-description {
+            color: var(--sky);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--sunbeam);
+            color: var(--black);
+            transform: translateY(-3px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background: var(--sunbeam);
+            color: var(--black);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(241, 177, 51, 0.6);
+        }
+
+        .action-button.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border: 2px solid var(--sky);
+        }
+
+        footer {
+            background: rgba(26, 32, 44, 0.95);
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                max-height: 0;
+                overflow: hidden;
+                transition: 0.3s ease;
+                opacity: 0;
+                gap: 0;
+            }
+
+            .nav-links.active {
+                max-height: 400px;
+                opacity: 1;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .event-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .event-arrow {
+                display: none;
+            }
+
+            .calendar-day {
+                padding: 0.5rem;
+                min-height: 50px;
+                font-size: 0.9rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🏃 TONKA TRACK</a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="#sports">Sports</a></li>
+                <li><a href="mtfcca.html">MTFCCA</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Events</h1>
+        <p>Stay connected with upcoming track & field events</p>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('upcoming')">Upcoming Events</button>
+            <button class="tab-button" onclick="showTab('calendar')">Calendar</button>
+        </div>
+
+        <div id="upcoming-tab" class="tab-content active">
+            <div class="events-list" id="events-list"></div>
+        </div>
+
+        <div id="calendar-tab" class="tab-content">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h2 id="calendar-month"></h2>
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)">← Prev</button>
+                        <button onclick="changeMonth(1)">Next →</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="event-modal" id="event-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <div class="modal-date" id="modal-date"></div>
+            </div>
+            <div class="modal-description" id="modal-description"></div>
+            <div class="social-links" id="modal-socials"></div>
+            <div class="action-buttons" id="modal-actions"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Tonka Track & Field. Building champions, one stride at a time.</p>
+    </footer>
+
+    <script>
+        const events = [
+            {
+                id: 1,
+                title: "Tonka Turkey Trot 5K",
+                date: new Date(2026, 10, 26),
+                description: "Join us for our annual Thanksgiving Day Turkey Trot 5K! This family-friendly race is a great way to start your Thanksgiving morning. All proceeds benefit the Minnetonka Track & Field and Cross Country programs.",
+                location: "Minnetonka High School",
+                social: {
+                    facebook: "#",
+                    instagram: "#",
+                    twitter: "#"
+                },
+                links: {
+                    signup: "#",
+                    moreInfo: "#"
+                }
+            }
+        ];
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function renderEvents() {
+            const eventsList = document.getElementById('events-list');
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const upcomingEvents = events.filter(e => e.date >= now);
+
+            if (upcomingEvents.length === 0) {
+                eventsList.innerHTML = '<p style="color: var(--sky); text-align: center; font-size: 1.2rem;">No upcoming events at this time.</p>';
+                return;
+            }
+
+            eventsList.innerHTML = upcomingEvents.map(event => `
+                <div class="event-card" onclick="openModal(${event.id})">
+                    <div class="event-date-box">
+                        <div class="event-month">${event.date.toLocaleDateString('en-US', { month: 'short' })}</div>
+                        <div class="event-day">${event.date.getDate()}</div>
+                    </div>
+                    <div class="event-info">
+                        <h3>${event.title}</h3>
+                        <p>${event.location}</p>
+                    </div>
+                    <div class="event-arrow">→</div>
+                </div>
+            `).join('');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthTitle = document.getElementById('calendar-month');
+
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const prevLastDay = new Date(currentYear, currentMonth, 0);
+
+            monthTitle.textContent = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            let html = '';
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayNames.forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+
+            const startDay = firstDay.getDay();
+            for (let i = startDay - 1; i >= 0; i--) {
+                const day = prevLastDay.getDate() - i;
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const currentDate = new Date(currentYear, currentMonth, day);
+                const hasEvent = events.some(e =>
+                    e.date.getDate() === day &&
+                    e.date.getMonth() === currentMonth &&
+                    e.date.getFullYear() === currentYear
+                );
+
+                const eventClass = hasEvent ? 'has-event' : '';
+                const onclick = hasEvent ? `onclick="openModalByDate(${currentYear}, ${currentMonth}, ${day})"` : '';
+
+                html += `<div class="calendar-day ${eventClass}" ${onclick}>${day}</div>`;
+            }
+
+            const remainingDays = 42 - (startDay + lastDay.getDate());
+            for (let day = 1; day <= remainingDays; day++) {
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+
+        function openModal(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+
+            document.getElementById('modal-title').textContent = event.title;
+            document.getElementById('modal-date').textContent = event.date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('modal-description').textContent = event.description;
+
+            document.getElementById('modal-socials').innerHTML = `
+                <a href="${event.social.facebook}" class="social-link" target="_blank" rel="noopener">📘</a>
+                <a href="${event.social.instagram}" class="social-link" target="_blank" rel="noopener">📷</a>
+                <a href="${event.social.twitter}" class="social-link" target="_blank" rel="noopener">🐦</a>
+            `;
+
+            document.getElementById('modal-actions').innerHTML = `
+                <a href="${event.links.signup}" class="action-button" target="_blank">Sign Up Now</a>
+                <a href="${event.links.moreInfo}" class="action-button secondary" target="_blank">More Info</a>
+            `;
+
+            document.getElementById('event-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openModalByDate(year, month, day) {
+            const event = events.find(e =>
+                e.date.getDate() === day &&
+                e.date.getMonth() === month &&
+                e.date.getFullYear() === year
+            );
+            if (event) openModal(event.id);
+        }
+
+        function closeModal() {
+            document.getElementById('event-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+            document.querySelector('.hamburger').classList.toggle('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        renderEvents();
+        renderCalendar();
+    </script>
+</body>
+
+</html>
